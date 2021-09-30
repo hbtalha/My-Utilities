@@ -55,17 +55,17 @@ void changeFilesNamesCustomly()
 
 void changeFilesNamesInABatch(path file_path, string to_erase)
 {
-    directory_iterator iter(file_path), endit;
-
-    for(; iter != endit; ++iter)
+    for(auto iter : directory_iterator(file_path))
     {
-        string filename = iter->path().filename().string();
+        string filename = iter.path().filename().string();
 
-        if(filename.find(to_erase))
+        if(filename.find(to_erase) != string::npos)
         {
            boost::erase_all(filename, to_erase);
 
-           filesystem::rename(iter->path().string(), file_path.string() + filename);
+           filesystem::rename(iter.path().string(), file_path.string() + filename);
+
+           cout << iter.path().string() << " -> " + file_path.string() + filename << endl;
         }
     }
 }
